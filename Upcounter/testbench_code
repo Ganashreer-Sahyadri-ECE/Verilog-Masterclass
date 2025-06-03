@@ -1,0 +1,30 @@
+`timescale 1ns/1ps
+module tb_up_down_counter;
+reg clk, reset, up_down;
+wire [3:0] count;
+up_down_counter uut (
+    .clk(clk),
+    .reset(reset),
+    .up_down(up_down),
+    .count(count)
+);
+initial begin
+    clk = 0;
+    forever #5 clk = ~clk;
+end
+initial begin
+    $dumpfile("up_down_counter.vcd");
+    $dumpvars(0, tb_up_down_counter);
+    reset = 1; up_down = 1; #10;
+    reset = 0;                  
+    up_down = 1;
+    #50;
+    up_down = 0;
+    #50;
+    reset = 1; #10;
+    reset = 0; #20;
+    up_down = 1;
+    #40;
+    $finish;
+end
+endmodule
